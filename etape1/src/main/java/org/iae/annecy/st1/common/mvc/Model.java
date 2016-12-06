@@ -20,6 +20,15 @@ public interface Model {
 	DataView get();
 
 	/**
+	 * Recherche et récupère les données lié à ce modele
+	 * 
+	 * @param datas
+	 *            paramètre à envoyer au model
+	 * @return Une represnetation des données géré par ce modèle.
+	 */
+	DataView get(DataParam datas);
+
+	/**
 	 * Définie le chemin d'acces à ce modèle.
 	 * 
 	 * @return Une chaine de texte identifiant de manière unique ce modèle.
