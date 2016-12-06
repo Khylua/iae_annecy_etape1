@@ -19,7 +19,7 @@ public class UserTextFrenchView implements StringView {
 	 */
 	public String build(final DataView datas) {
 
-		final String textView = "Votre nom : " + datas.getData("name");
+		final String textView = "Bonjour " + datas.getData("name") + "!";
 
 		return textView;
 	}

@@ -55,7 +55,7 @@
 						<ruleset>/rulesets/java/basic.xml</ruleset>
 						<ruleset>/rulesets/java/braces.xml</ruleset>
 
-						<ruleset>/rulesets/java/cloneImplementation.xml</ruleset>
+						<!--  <ruleset>/rulesets/java/cloneImplementation.xml</ruleset> -->
 
 						<ruleset>/rulesets/java/naming.xml</ruleset>
 					</rulesets>

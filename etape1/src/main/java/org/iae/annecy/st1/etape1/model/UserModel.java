@@ -21,7 +21,7 @@ public class UserModel implements Model {
 	public DataView get() {
 		final DataView datas = new UserData();
 
-		datas.add("name", "jérémie");
+		datas.add("name", "Karine");
 
 		return datas;
 	}
