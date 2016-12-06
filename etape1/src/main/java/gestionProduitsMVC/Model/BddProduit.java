@@ -49,7 +49,7 @@ public class BddProduit {
 		                new FileInputStream(
 		                  new File(filename))));
 			try {
-				ArrayList<Produit> listP = (ArrayList<Produit>)ois.readObject();
+				ArrayList<Produit> listP = (ArrayList<Produit>) ois.readObject();
 				// on change la liste du catalogue
 				this.getCatalogue().setListeDeProduits(listP);
 			
