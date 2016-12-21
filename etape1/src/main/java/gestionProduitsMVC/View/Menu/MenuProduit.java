@@ -1,5 +1,9 @@
 package gestionProduitsMVC.View.Menu;
 
+/**
+ * @author karinerevet
+ * Vue gérant l'affichage du menu gérant les produits
+ */
 public class MenuProduit  extends Menu{
 
 	public MenuProduit(String nom) {

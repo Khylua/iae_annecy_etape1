@@ -2,6 +2,10 @@ package gestionProduitsMVC.Controller.Catalogue;
 
 import gestionProduitsMVC.Model.Catalogue;
 
+/**
+ * @author karinerevet
+ * Classe exemple commencée en cours... non utilisée
+ */
 public class CatalogueController {
 	
 	//attribut

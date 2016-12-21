@@ -3,10 +3,12 @@ package gestionProduitsMVC.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * @author karinerevet
+ * modèle représentant les données liées à un client
+ */
 public class Client implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	// attributs
 	private String nom;
@@ -67,6 +69,7 @@ public class Client implements Serializable{
 		super();
 		annuaire.ajouterClient(this);
 		this.paniersHistorique = new ArrayList<Panier>();
+		this.panierEnCours = new Panier();
 	}
 	public Client(Annuaire a, String nom, String prenom, String numero, String codePromo) {
 		this(a, nom, prenom, numero);
@@ -78,6 +81,7 @@ public class Client implements Serializable{
 		this.prenom = prenom;
 		this.numero = numero;
 		this.annuaire = a;
+		this.codePromo = "";
 	}
 	
 	// affichage

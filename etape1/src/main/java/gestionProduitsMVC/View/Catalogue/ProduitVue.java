@@ -4,6 +4,10 @@ package gestionProduitsMVC.View.Catalogue;
 import gestionProduitsMVC.Model.Produit;
 import gestionProduitsMVC.View.Element;
 
+/**
+ * @author karinerevet
+ * Vue gérant l'affichage d'un produit
+ */
 public class ProduitVue {
 	// attribut
 	private Produit produit;
@@ -49,7 +53,7 @@ public class ProduitVue {
 	}
 	
 	// données produit détail
-	public String détailProduit() {
+	public String detailProduit() {
 		return "Produit N° = " + produit.getReference() + "\n" 
 				+ "\t Nom : " + produit.getNom() + "\n"
 				+ "\t Prix : " + produit.getPrix() + "\n"
@@ -59,7 +63,7 @@ public class ProduitVue {
 	
 	// affichage produit détail
 	public void afficherProduitDetail(){
-		Element cat = new Element(this.détailProduit());
+		Element cat = new Element(this.detailProduit());
 		cat.initElement();
 	}
 	

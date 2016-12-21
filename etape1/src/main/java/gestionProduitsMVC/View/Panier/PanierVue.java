@@ -11,6 +11,10 @@ import gestionProduitsMVC.View.Element;
 import gestionProduitsMVC.View.ElementInteractif;
 import gestionProduitsMVC.View.Catalogue.ProduitVue;
 
+/**
+ * @author karinerevet
+ * Vue gérant l'affichage du panier de produits d'un client
+ */
 public class PanierVue {
 	//attribut
 	private Panier panier;
@@ -56,7 +60,7 @@ public class PanierVue {
 	      Integer quantite = (Integer)entry.getValue();
 	      Double prix = ((Produit)entry.getKey()).getPrix();
 	      Double qp = quantite*prix;
-	      ElementInteractif qpT = new ElementInteractif("\tPrix global = "+ qp +"");
+	      ElementInteractif qpT = new ElementInteractif("\tPrix global = "+ qp +"\n");
 	      qpT.initElement();
 	      facture = facture + qp;
 	    }

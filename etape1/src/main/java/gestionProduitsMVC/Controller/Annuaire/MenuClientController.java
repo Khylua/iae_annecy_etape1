@@ -1,16 +1,22 @@
 package gestionProduitsMVC.Controller.Annuaire;
 
 import gestionProduitsMVC.Model.Annuaire;
+import gestionProduitsMVC.Model.Catalogue;
 import gestionProduitsMVC.Model.Client;
 import gestionProduitsMVC.View.Element;
 import gestionProduitsMVC.View.ElementInteractif;
 import gestionProduitsMVC.View.Question;
 import gestionProduitsMVC.View.Menu.MenuClient;
 
+/**
+ * @author karinerevet
+ * La classe MenuClientController permet la gestion du menu dédié aux fonctionnalités en lien avec les clients
+ */
 public class MenuClientController {
 	//attribut
 	private MenuClient menuClient;
 	private Annuaire annuaire;
+	private Catalogue catalogue;
 	private Client client;
 	
 	//getters et setters
@@ -26,6 +32,9 @@ public class MenuClientController {
 	public Annuaire getAnnuaire() {
 		return annuaire;
 	}
+	public Catalogue getCatalogue() {
+		return catalogue;
+	}
 	public void setAnnuaire(Annuaire annuaire) {
 		this.annuaire = annuaire;
 	}
@@ -34,10 +43,11 @@ public class MenuClientController {
 	}
 	
 	//constructeur
-	public MenuClientController(MenuClient menuClient, Annuaire annuaire) {
+	public MenuClientController(MenuClient menuClient, Annuaire annuaire, Catalogue catalogue) {
 		super();
 		this.menuClient = menuClient;
 		this.annuaire = annuaire;
+		this.catalogue = catalogue;
 	}
 	
 	public void traitement(){
@@ -53,13 +63,13 @@ public class MenuClientController {
 			// annuaire
 			this.setClient(null);
 		}else{
-			ElementInteractif error = new ElementInteractif("-- Erreur de saisir --");
+			ElementInteractif error = new ElementInteractif("-- Erreur de saisir --", 1);
 			error.initElement();
 			this.getMenuClient().initMenu();
 		}
-		// traitement de la réponse précédente
-		ClientController cc = new ClientController(this.getClient(), this.getAnnuaire());
 		
+		// traitement de la réponse précédente
+		ClientController cc = new ClientController(this.getClient(), this.getAnnuaire(), this.getCatalogue());
 		switch(Integer.parseInt(choix)){
 			case 0 :
 				this.getMenuClient().sortieApplication();
@@ -77,7 +87,7 @@ public class MenuClientController {
 				cc.afficherAnnuaire();
 				break;
 			default :
-				ElementInteractif error = new ElementInteractif("-- Erreur de saisir --");
+				ElementInteractif error = new ElementInteractif("-- Erreur de saisir --", 1);
 				error.initElement();
 				this.getMenuClient().initMenu();
 				break;
@@ -91,13 +101,12 @@ public class MenuClientController {
 		String num = choix.getReponse();
 		Client c = this.getAnnuaire().chercherClientParNum(num);
 		if(c == null){
-			Element error = new Element("-- Client non trouvé --");
+			Element error = new Element("-- Client non trouvé --", 1);
 			error.initElement();
 			this.choisirClient();
 		}else{
 			this.setClient(c);
 		}
 	}
-	
 		
 }

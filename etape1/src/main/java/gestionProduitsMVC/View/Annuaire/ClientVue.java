@@ -3,6 +3,10 @@ package gestionProduitsMVC.View.Annuaire;
 import gestionProduitsMVC.Model.Client;
 import gestionProduitsMVC.View.Element;
 
+/**
+ * @author karinerevet
+ * vue gérant l'affichage d'un client
+ */
 public class ClientVue {
 	// attribut
 	private Client client;

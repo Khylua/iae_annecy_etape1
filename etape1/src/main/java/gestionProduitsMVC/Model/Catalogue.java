@@ -4,13 +4,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * @author karinerevet
+ * Modèle gérant la collection de produit (catalogue)
+ */
 public class Catalogue implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	//attributs
 	private ArrayList<Produit> listeDeProduits;
+	private BddCatalogue bddP;
 	
 	//getters et setters
 	public ArrayList<Produit> getListeDeProduits() {
@@ -18,6 +21,12 @@ public class Catalogue implements Serializable{
 	}
 	public void setListeDeProduits(ArrayList<Produit> listeDeProduits) {
 		this.listeDeProduits = listeDeProduits;
+	}
+	public BddCatalogue getBddP() {
+		return bddP;
+	}
+	public void setBddP(BddCatalogue bddP) {
+		this.bddP = bddP;
 	}
 	
 	//constructeur

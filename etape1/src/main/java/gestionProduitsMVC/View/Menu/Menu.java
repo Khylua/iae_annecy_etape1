@@ -8,6 +8,11 @@ import java.util.Set;
 
 import gestionProduitsMVC.View.ElementInteractif;
 
+/**
+ * @author karinerevet
+ * Vue gérant l'affichage d'un menu
+ * un menu est un élément interactif
+ */
 public class Menu extends ElementInteractif{
 	
 	// attributs

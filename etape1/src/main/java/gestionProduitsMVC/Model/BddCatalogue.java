@@ -10,12 +10,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
+import java.io.Serializable;
 
-public class BddProduit {
+/**
+ * @author karinerevet
+ * Base de données : lien avec le fichier enregistrant la gestion des produits (catalogue)
+ */
+public class BddCatalogue implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	// attributs
 	private String filename;
-	private Catalogue catalogue;
 	
 	// getters et setters 
 	public String getFilename() {
@@ -24,23 +29,17 @@ public class BddProduit {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
-	public Catalogue getCatalogue() {
-		return catalogue;
-	}
-	public void setCatalogue(Catalogue catalogue) {
-		this.catalogue = catalogue;
-	}
 	
 	// constructeur
-	public BddProduit(String filename, Catalogue c) {
+	public BddCatalogue(String filename, Catalogue c) {
 		super();
 		this.filename = filename;
-		this.catalogue = c;
-		this.lireProduitBDD();
+		this.lireCatalogueBDD(c);
+		c.setBddP(this);
 	}
 	
 	// lit la BDD et écrit dans le catalogue
-	private void lireProduitBDD(){
+	private void lireCatalogueBDD(Catalogue c){
 		try {
 			// récupération des données pour les mettre dans le catalogue
 			ObjectInputStream ois;
@@ -49,9 +48,9 @@ public class BddProduit {
 		                new FileInputStream(
 		                  new File(filename))));
 			try {
-				ArrayList<Produit> listP = (ArrayList<Produit>) ois.readObject();
+				Catalogue cat = (Catalogue) ois.readObject();
 				// on change la liste du catalogue
-				this.getCatalogue().setListeDeProduits(listP);
+				c.setListeDeProduits(cat.getListeDeProduits());;
 			
 			}catch (EOFException e){
 				ois.close(); // gestion erreur de fin de fichier
@@ -61,14 +60,12 @@ public class BddProduit {
 		} catch (FileNotFoundException e) {
 	      e.printStackTrace();
 	    } catch (IOException e) {
-	      e.printStackTrace();
+	      //e.printStackTrace();
 	    }  
 	}
 	
 	// lit le catalogue et écrit dans la BDD
-	public void ajoutProduitBDD(){
-		// on récupère le catalogue
-		ArrayList<Produit> listP = this.getCatalogue().getListeDeProduits();
+	public void ajoutCatalogueBDD(Catalogue c){
 		// ajout au fichier bdd
 		ObjectOutputStream oos;
 		 try {
@@ -77,7 +74,7 @@ public class BddProduit {
 		                new FileOutputStream(
 		                  new File(this.getFilename()))));
 		      //écriture de l'objet dans le fichier
-		      oos.writeObject(listP);
+		      oos.writeObject(c);
 		      //fermeture du fichier
 		      oos.close();
 		 } catch (FileNotFoundException e) {
@@ -88,7 +85,7 @@ public class BddProduit {
 	}
 	
 	// supprimer données
-	public void clearProduitBDD(){
+	public void clearCatalogueBDD(){
 		// ajout du produit au fichier bdd
 		ObjectOutputStream oos;
 		 try {
@@ -97,6 +94,7 @@ public class BddProduit {
 		                new FileOutputStream(
 		                  new File(this.getFilename()))));
 		      oos.reset();
+		      oos.flush();
 		      //fermeture du fichier
 		      oos.close();
 		 } catch (FileNotFoundException e) {
@@ -104,14 +102,15 @@ public class BddProduit {
 		 } catch (IOException e) {
 		      e.printStackTrace();
 		 }
+		 
 	}
 	
 	// modifier	
-	public void miseAJourProduitBDD(){
+	public void miseAJourCatalogueBDD(Catalogue c){
 		// on efface le fichier
-		this.clearProduitBDD();
+		this.clearCatalogueBDD();
 		// on écrit dans le fichier avec la nouvelle liste
-		this.ajoutProduitBDD();
+		this.ajoutCatalogueBDD(c);
 	}
 	
 }

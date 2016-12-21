@@ -10,7 +10,12 @@ import gestionProduitsMVC.View.Question;
 import gestionProduitsMVC.View.Annuaire.AnnuaireVue;
 import gestionProduitsMVC.View.Menu.MenuModificationClient;
 
+/**
+ * @author karinerevet
+ * La calsse ClientController permet de gérer tout ce qui est en lien avec l'annuaire et le client
+ */
 public class ClientController {
+	
 	//attributs
 	private Client client;
 	private Annuaire annuaire;
@@ -33,18 +38,18 @@ public class ClientController {
 		return catalogue;
 	}
 
-	
 	//constructeur
-	public ClientController(Client client, Annuaire annuaire) {
+	public ClientController(Client client, Annuaire annuaire, Catalogue catalogue) {
 		super();
 		this.client = client;
 		this.annuaire = annuaire;
+		this.catalogue = catalogue;
 	}
 	
 	// -------------------------------------------------------------------------------
 	//ajouter
 	public void ajouterClient(){
-		ElementInteractif ad = new ElementInteractif("Ajouter un nouveau client");
+		ElementInteractif ad = new ElementInteractif("Ajouter un nouveau client", 3);
 		ad.initElement();
 		//reference
 		Boolean refOk = false;
@@ -54,17 +59,21 @@ public class ClientController {
 			refOk = this.ckeckNumero(numC);
 		}
 		this.getClient().setNumero(numC);
+		this.majBdd();
 		//nom
 		String nomC = this.questionAjoutClient("Nom", "le nom");
 		this.getClient().setNom(nomC);
+		this.majBdd();
 		//prénom
 		String preC = this.questionAjoutClient("Prénom", "le prénom");
 		this.getClient().setPrenom(preC);
+		this.majBdd();
 		//promo
 		String proC = this.questionAjoutClient("Code promo", "le code promo");
 		this.getClient().setCodePromo(proC);
+		this.majBdd();
 		//confirmation
-		ElementInteractif ok = new ElementInteractif("Client de numéro "+this.getClient().getNumero()+" ajouté au catalogue avec succès.");
+		ElementInteractif ok = new ElementInteractif("Client de numéro "+this.getClient().getNumero()+" ajouté au catalogue avec succès.", 2);
 		ok.initElement();
 		this.relancerAppli();
 	}
@@ -83,7 +92,7 @@ public class ClientController {
 		if( c == null){
 			return true;
 		}
-		ElementInteractif ok = new ElementInteractif("Attention : le numéro ne doit pas être déjà attribuée à un autre client.");
+		ElementInteractif ok = new ElementInteractif("Attention : le numéro ne doit pas être déjà attribuée à un autre client.", 1);
 		ok.initElement();
 		return false;
 	}
@@ -95,9 +104,9 @@ public class ClientController {
 		mmc.initMenu();
 		MenuModificationClientController mmcc = new MenuModificationClientController(mmc, this.getClient());
 		mmcc.traitementModificationClient();
+		this.majBdd();
 		this.relancerAppli();
 	}
-	
 	
 	// -------------------------------------------------------------------------------
 	//supprimer
@@ -117,10 +126,16 @@ public class ClientController {
 		}else{
 			mess = "-- Erreur --";
 		}
-		Element e = new Element(mess);
+		Element e;
+		if(!ok){
+			e = new Element(mess, 1);
+		}else{
+			e = new Element(mess, 2);
+		}
 		e.initElement();
 		if(!ok){
 			this.supprimerClient();
+			this.majBdd();
 		}else{
 			this.relancerAppli();
 		}
@@ -134,13 +149,15 @@ public class ClientController {
 		this.relancerAppli();
 	}
 	
-	
 	// -------------------------------------------------------------------------------
 	// relancer appli
 	public void relancerAppli(){
-		new ApplicationController(bddP, bddC);
+		new ApplicationController(this.getCatalogue(), this.getAnnuaire());
 	}
 	
-	
-	
+	// -------------------------------------------------------------------------------
+	// mise à jour BDD
+	public void majBdd(){
+		this.getAnnuaire().getBddC().miseAJourAnnuaireBDD(this.getAnnuaire());
+	}
 }

@@ -10,12 +10,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
+import java.io.Serializable;
 
-public class BddClient {
+/**
+ * @author karinerevet
+ * Base de données : lien avec le fichier enregistrant la gestion des clients (annuaire)
+ */
+public class BddAnnuaire implements Serializable{
+	private static final long serialVersionUID = 1L;
 	// attributs
 	private String filename;
-	private Annuaire annuaire;
 	
 	// getters et setters 
 	public String getFilename() {
@@ -24,23 +28,17 @@ public class BddClient {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
-	public Annuaire getAnnuaire() {
-		return annuaire;
-	}
-	public void setAnnuaire(Annuaire annuaire) {
-		this.annuaire = annuaire;
-	}
 	
 	// constructeur
-	public BddClient(String filename, Annuaire a) {
+	public BddAnnuaire(String filename, Annuaire a) {
 		super();
 		this.filename = filename;
-		this.annuaire = a;
-		this.lireClientBDD();
+		this.lireAnnuaireBDD(a);
+		a.setBddC(this);
 	}
 	
 	// lit la BDD et écrit dans le annuaire
-	private void lireClientBDD(){
+	private void lireAnnuaireBDD(Annuaire a){
 		try {
 			// récupération des données pour les mettre dans le annuaire
 			ObjectInputStream ois;
@@ -49,9 +47,9 @@ public class BddClient {
 		                new FileInputStream(
 		                  new File(filename))));
 			try {
-				ArrayList<Client> listC = (ArrayList<Client>)ois.readObject();
+				Annuaire ann = (Annuaire)ois.readObject();
 				// on change la liste du annuaire
-				this.getAnnuaire().setListeDesClients(listC);
+				a.setListeDesClients(ann.getListeDesClients());
 			
 			}catch (EOFException e){
 				ois.close(); // gestion erreur de fin de fichier
@@ -61,14 +59,12 @@ public class BddClient {
 		} catch (FileNotFoundException e) {
 	      e.printStackTrace();
 	    } catch (IOException e) {
-	      e.printStackTrace();
+	      //e.printStackTrace();
 	    }  
 	}
 	
-	// lit le annuaire et écrit dans la BDD
-	public void ajoutClientBDD(){
-		// on récupère le annuaire
-		ArrayList<Client> listC = this.getAnnuaire().getListeDesClients();
+	// lit l'annuaire et écrit dans la BDD
+	public void ajoutAnnuaireBDD(Annuaire a){
 		// ajout au fichier bdd
 		ObjectOutputStream oos;
 		 try {
@@ -77,7 +73,7 @@ public class BddClient {
 		                new FileOutputStream(
 		                  new File(this.getFilename()))));
 		      //écriture de l'objet dans le fichier
-		      oos.writeObject(listC);
+		      oos.writeObject(a);
 		      //fermeture du fichier
 		      oos.close();
 		 } catch (FileNotFoundException e) {
@@ -88,7 +84,7 @@ public class BddClient {
 	}
 	
 	// supprimer données
-	public void clearClientBDD(){
+	public void clearAnnuaireBDD(){
 		// ajout du client au fichier bdd
 		ObjectOutputStream oos;
 		 try {
@@ -102,16 +98,17 @@ public class BddClient {
 		 } catch (FileNotFoundException e) {
 		      e.printStackTrace();
 		 } catch (IOException e) {
-		      e.printStackTrace();
+		      //e.printStackTrace();
 		 }
+		 
 	}
 	
 	// modifier	
-	public void miseAJourClientBDD(){
+	public void miseAJourAnnuaireBDD(Annuaire a){
 		// on efface le fichier
-		this.clearClientBDD();
+		this.clearAnnuaireBDD();
 		// on écrit dans le fichier avec la nouvelle liste
-		this.ajoutClientBDD();
+		this.ajoutAnnuaireBDD(a);
 	}
 	
 }

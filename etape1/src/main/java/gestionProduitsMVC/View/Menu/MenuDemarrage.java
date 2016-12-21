@@ -1,5 +1,9 @@
 package gestionProduitsMVC.View.Menu;
 
+/**
+ * @author karinerevet
+ * Vue gérant l'affichage du menu initial
+ */
 public class MenuDemarrage  extends Menu{
 
 	public MenuDemarrage(String nom) {

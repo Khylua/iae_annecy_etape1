@@ -3,7 +3,13 @@ package gestionProduitsMVC.Controller;
 import gestionProduitsMVC.View.ElementInteractif;
 import gestionProduitsMVC.View.Menu.MenuDemarrage;
 
+/**
+ * @author karinerevet
+  La classe MenuDemarrageController permet de gérer la saisie utilisateur du menu initial
+ */
+
 public class MenuDemarrageController {
+	
 	//attribut
 	private MenuDemarrage menuDemarrage;
 	
@@ -15,12 +21,20 @@ public class MenuDemarrageController {
 		this.menuDemarrage = menuDemarrage;
 	}
 	
-	//constructeur
+	// constructeur
+	/**
+	 * @param menuDemarrage
+	 * Permet de lier le controller à l'élément qu'il gère, à savoir un MenuDemarrage
+	 */
 	public MenuDemarrageController(MenuDemarrage menuDemarrage) {
 		super();
 		this.menuDemarrage = menuDemarrage;
 	}
 	
+	// traitement de la réponse associée au MenuDemarrage
+	/**
+	 * @return un entier (Integer)
+	 */
 	public int traitementDemarrage(){
 		String choix = this.getMenuDemarrage().getReponse();
 		Integer rep = 0;
@@ -38,7 +52,7 @@ public class MenuDemarrageController {
 				rep = 3;
 				break;
 			default :
-				ElementInteractif error = new ElementInteractif("-- Erreur de saisir --");
+				ElementInteractif error = new ElementInteractif("-- Erreur de saisir --", 1);
 				error.initElement();
 				this.getMenuDemarrage().initMenu();
 				break;
@@ -46,6 +60,5 @@ public class MenuDemarrageController {
 		// TODO : gestion des erreurs si la saisie n'est pas de type integer - retourner même résultat que défault
 		return rep;
 	}
-	
 	
 }

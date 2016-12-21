@@ -1,5 +1,6 @@
 package gestionProduitsMVC.Controller.Catalogue;
 
+import gestionProduitsMVC.Model.Annuaire;
 import gestionProduitsMVC.Model.Catalogue;
 import gestionProduitsMVC.Model.Produit;
 import gestionProduitsMVC.View.Element;
@@ -7,11 +8,18 @@ import gestionProduitsMVC.View.ElementInteractif;
 import gestionProduitsMVC.View.Question;
 import gestionProduitsMVC.View.Menu.MenuProduit;
 
+/**
+ * @author karinerevet
+ * Controller pour toute la gestion des produits et du catalogue :
+ * choix du produit dans le catalogue
+ * appel aux controller selon l'action à mener sur le produit
+ */
 public class MenuProduitController {
 	//attribut
 	private MenuProduit menuProduit;
 	private Catalogue catalogue;
 	private Produit produit;
+	private Annuaire annuaire;
 	
 	//getters et setters
 	public MenuProduit getMenuProduit() {
@@ -26,6 +34,9 @@ public class MenuProduitController {
 	public Catalogue getCatalogue() {
 		return catalogue;
 	}
+	public Annuaire getAnnuaire() {
+		return annuaire;
+	}
 	public void setCatalogue(Catalogue catalogue) {
 		this.catalogue = catalogue;
 	}
@@ -34,10 +45,11 @@ public class MenuProduitController {
 	}
 	
 	//constructeur
-	public MenuProduitController(MenuProduit menuProduit, Catalogue catalogue) {
+	public MenuProduitController(MenuProduit menuProduit, Catalogue catalogue, Annuaire annuaire) {
 		super();
 		this.menuProduit = menuProduit;
 		this.catalogue = catalogue;
+		this.annuaire = annuaire;
 	}
 	
 	public void traitement(){
@@ -53,12 +65,12 @@ public class MenuProduitController {
 			// affichage catalogue
 			this.setProduit(null);
 		}else{
-			ElementInteractif error = new ElementInteractif("-- Erreur de saisir --");
+			ElementInteractif error = new ElementInteractif("-- Erreur de saisir --", 1);
 			error.initElement();
 			this.getMenuProduit().initMenu();
 		}
 		// traitement de la réponse précédente
-		ProduitController pc = new ProduitController(this.getProduit(), this.getCatalogue());
+		ProduitController pc = new ProduitController(this.getProduit(), this.getCatalogue(), this.getAnnuaire());
 		
 		switch(Integer.parseInt(choix)){
 			case 0 :
@@ -80,7 +92,7 @@ public class MenuProduitController {
 				pc.afficherCatalogue();
 				break;
 			default :
-				ElementInteractif error = new ElementInteractif("-- Erreur de saisir --");
+				ElementInteractif error = new ElementInteractif("-- Erreur de saisir --", 1);
 				error.initElement();
 				this.getMenuProduit().initMenu();
 				break;
@@ -94,7 +106,7 @@ public class MenuProduitController {
 		String refP = choixProduit.getReponse();
 		Produit p = this.getCatalogue().chercherProduitParRef(refP);
 		if(p == null){
-			Element error = new Element("-- Produit non trouvé --");
+			Element error = new Element("-- Produit non trouvé --", 1);
 			error.initElement();
 			this.choisirProduit();
 		}else{

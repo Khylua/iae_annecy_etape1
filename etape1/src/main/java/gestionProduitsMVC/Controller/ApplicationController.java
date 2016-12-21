@@ -1,11 +1,10 @@
 package gestionProduitsMVC.Controller;
 
+// imports
 import gestionProduitsMVC.Controller.Annuaire.MenuClientController;
 import gestionProduitsMVC.Controller.Catalogue.MenuProduitController;
 import gestionProduitsMVC.Controller.Panier.MenuPanierController;
 import gestionProduitsMVC.Model.Annuaire;
-import gestionProduitsMVC.Model.BddClient;
-import gestionProduitsMVC.Model.BddProduit;
 import gestionProduitsMVC.Model.Catalogue;
 import gestionProduitsMVC.View.ElementInteractif;
 import gestionProduitsMVC.View.Menu.MenuClient;
@@ -13,13 +12,17 @@ import gestionProduitsMVC.View.Menu.MenuDemarrage;
 import gestionProduitsMVC.View.Menu.MenuPanier;
 import gestionProduitsMVC.View.Menu.MenuProduit;
 
+/**
+ * @author karinerevet
+ * La classe ApplicationController permet de gérer globalement l'application, faire l'appel au premier menu, 
+ * puis en fonction du résultat, appeler les controller compétents (responsabilité)
+ */
+
 public class ApplicationController {
 
 	//attributs
 	private Catalogue catalogue;
 	private Annuaire annuaire;
-	private BddProduit bddP;
-	private BddClient bddC;
 
 	//getters et setters
 	public Catalogue getCatalogue() {
@@ -34,26 +37,12 @@ public class ApplicationController {
 	public void setAnnuaire(Annuaire annuaire) {
 		this.annuaire = annuaire;
 	}
-	public BddProduit getBddP() {
-		return bddP;
-	}
-	public void setBddP(BddProduit bddP) {
-		this.bddP = bddP;
-	}
-	public BddClient getBddC() {
-		return bddC;
-	}
-	public void setBddC(BddClient bddC) {
-		this.bddC = bddC;
-	}
 	
 	//constructeur
-	public ApplicationController(BddProduit bddP, BddClient bddC) {
+	public ApplicationController(Catalogue catalogue, Annuaire annuaire) {
 		super();
-		this.bddP = bddP;
-		this.bddC = bddC;
-		this.catalogue = bddP.getCatalogue();
-		this.annuaire = bddC.getAnnuaire();
+		this.catalogue = catalogue;
+		this.annuaire = annuaire;
 		this.demarrerAppli();
 	}
 	
@@ -66,6 +55,11 @@ public class ApplicationController {
 		this.traitementMenuDemarrage(rep);
 	}
 	
+	// traitement du résulat du menu de démarrage
+	/**
+	 * @param reponse
+	 * La réponse doit être un entier correspondant à la saisie utilisateur en réponse du menu
+	 */
 	private void traitementMenuDemarrage(Integer reponse){
 		switch(reponse){
 		case 1 : // produit
@@ -78,20 +72,18 @@ public class ApplicationController {
 			this.afficherMenuPanier();
 			break;
 		default :
-			ElementInteractif error = new ElementInteractif("-- Erreur de saisir --");
+			ElementInteractif error = new ElementInteractif("-- Erreur de saisir --", 1);
 			error.initElement();
 			this.demarrerAppli();
 			break;
 		}
 	}
 	
-
-	
-	//produit
+	// produit
 	private void afficherMenuProduit(){
 		MenuProduit mp = new MenuProduit("----------------------------------\nGestion des produits du catalogue\n----------------------------------");
 		mp.initMenu();
-		MenuProduitController mpc = new MenuProduitController(mp, catalogue);
+		MenuProduitController mpc = new MenuProduitController(mp, catalogue, annuaire);
 		mpc.traitement();
 	}
 	
@@ -99,9 +91,8 @@ public class ApplicationController {
 	private void afficherMenuClient(){
 		MenuClient mc = new MenuClient("---------------------------------\nGestion des clients de l'annuaire\n---------------------------------");
 		mc.initMenu();
-		MenuClientController mcc = new MenuClientController(mc, annuaire);
+		MenuClientController mcc = new MenuClientController(mc, annuaire, catalogue);
 		mcc.traitement();
-		
 	}
 
 	// panier
@@ -114,7 +105,5 @@ public class ApplicationController {
 		mp.initMenu();
 		mpc.traitement();
 	}
-	
-	
 	
 }

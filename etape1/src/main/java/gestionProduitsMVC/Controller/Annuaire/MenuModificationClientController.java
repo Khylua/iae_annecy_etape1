@@ -5,6 +5,10 @@ import gestionProduitsMVC.View.Element;
 import gestionProduitsMVC.View.Question;
 import gestionProduitsMVC.View.Menu.MenuModificationClient;
 
+/**
+ * @author karinerevet
+ * Coroller dédié à la gestion de la modification du client
+ */
 public class MenuModificationClientController {
 	// attributs
 	private MenuModificationClient mmc;
@@ -37,7 +41,7 @@ public class MenuModificationClientController {
 		String attribut = "";
 		switch(Integer.parseInt(this.getMmc().getReponse())){
 			case 0 :
-				Element out = new Element("-- Sortie de l'application ! --");
+				Element out = new Element("-- Sortie de l'application ! --", 3);
 				out.initElement();
 				System.exit(0);
 				break;
@@ -54,7 +58,7 @@ public class MenuModificationClientController {
 				attribut = "le code rpomo";
 				break;
 			default :
-				Element error = new Element("-- Erreur de saisir --");
+				Element error = new Element("-- Erreur de saisir --", 1);
 				error.initElement();
 				this.getMmc().initMenu();
 				break;
@@ -78,13 +82,13 @@ public class MenuModificationClientController {
 				this.getClient().setCodePromo(nouvelleValeur);
 				break;
 			default :
-				Element error = new Element("-- Erreur --");
+				Element error = new Element("-- Erreur --", 1);
 				error.initElement();
 				this.getMmc().initMenu();
 				break;
 		}
 		// message réussite
-		Element messReussite = new Element("Modification effectuée avec succès sur "+attribut+" du client "+this.getClient().getNumero());
+		Element messReussite = new Element("Modification effectuée avec succès sur "+attribut+" du client "+this.getClient().getNumero(), 2);
 		messReussite.initElement();
 	}
 }

@@ -2,11 +2,12 @@ package gestionProduitsMVC.Model;
 
 import java.io.Serializable;
 
+/**
+ * @author karinerevet
+ * modèle représentant les produits
+ */
 public class Produit implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	//attributs
 	private String reference;

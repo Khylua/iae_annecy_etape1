@@ -2,6 +2,11 @@ package gestionProduitsMVC.View;
 
 import java.util.Scanner;
 
+/**
+ * @author karinerevet
+ * Vue héritant de Element
+ * ajoute la gestion des interactions (scanner)
+ */
 public class ElementInteractif extends Element{
 
 	// attributs
@@ -18,6 +23,10 @@ public class ElementInteractif extends Element{
 	// constructeur
 	public ElementInteractif(String nom) {
 		super(nom);
+	}
+	
+	public ElementInteractif(String nom, Integer code) {
+		super(nom, code);
 	}
 	
 	//lecture réponse

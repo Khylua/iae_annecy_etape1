@@ -3,11 +3,13 @@ package gestionProduitsMVC.Model;
 import java.io.Serializable;
 import java.util.Hashtable;
 
+/**
+ * @author karinerevet
+ * modèle représentant la gestion de collection de produits, la notion de commande
+ * nb : les paniers sont associés à un client chacun
+ */
 public class Panier implements Serializable{
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	// attributs
 	private Hashtable<Produit,Integer> produits;

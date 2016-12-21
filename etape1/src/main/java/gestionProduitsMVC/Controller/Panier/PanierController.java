@@ -12,13 +12,16 @@ import gestionProduitsMVC.View.Question;
 import gestionProduitsMVC.View.Panier.CommandesVue;
 import gestionProduitsMVC.View.Panier.PanierVue;
 
+/**
+ * @author karinerevet
+ * Controller permettant toute la gestion du panier d'un client
+ */
 public class PanierController {
 
 	//attributs
 	private Catalogue catalogue;
 	private Annuaire annuaire;
 	private Client client;
-	
 	
 	//getters et setters
 	public Catalogue getCatalogue() {
@@ -54,7 +57,7 @@ public class PanierController {
 	// -------------------------------------------------------------------------------
 	//ajouter
 	public void ajouterProduit(){
-		ElementInteractif ad = new ElementInteractif("Ajouter un nouveau produit");
+		ElementInteractif ad = new ElementInteractif("Ajouter un nouveau produit", 3);
 		ad.initElement();
 		//demande de la référence à l'utilisateur
 		Boolean refOk = false;
@@ -89,8 +92,9 @@ public class PanierController {
 			}
 		}
 		//confirmation
-		ElementInteractif ok = new ElementInteractif("Produit de référence "+p.getReference()+" ajouté au panier en "+qP+" exemplaire(s).");
+		ElementInteractif ok = new ElementInteractif("Produit de référence "+p.getReference()+" ajouté au panier en "+qP+" exemplaire(s).", 2);
 		ok.initElement();
+		this.majBdd();
 		//retour menu
 		this.relancerAppli();
 	}
@@ -109,7 +113,7 @@ public class PanierController {
 		if(Integer.parseInt(q) >= 0){
 			return true;
 		}
-		ElementInteractif ok = new ElementInteractif("Attention : la quantité ne doit pas être négative. (0 pour ne pas ajouter le produit)");
+		ElementInteractif ok = new ElementInteractif("Attention : la quantité ne doit pas être négative. (0 pour ne pas ajouter le produit)", 1);
 		ok.initElement();
 		return false;
 	}
@@ -118,7 +122,7 @@ public class PanierController {
 		if( p != null){
 			return true;
 		}
-		ElementInteractif ok = new ElementInteractif("Attention : la référence doit exister dans le catalogue.");
+		ElementInteractif ok = new ElementInteractif("Attention : la référence doit exister dans le catalogue.", 1);
 		ok.initElement();
 		return false;
 	}
@@ -129,7 +133,7 @@ public class PanierController {
 		// choix du produit à modifier
 		Produit p = this.choisirProduit();
 		// rappel ancienne quantité
-		ElementInteractif qA = new ElementInteractif("La quantité actuelle de ce produit est actuellement de "+this.getClient().getPanierEnCours().chercherQuantiteProduit(p)+ " dans votre panier.");
+		ElementInteractif qA = new ElementInteractif("La quantité actuelle de ce produit est actuellement de "+this.getClient().getPanierEnCours().chercherQuantiteProduit(p)+ " dans votre panier.", 3);
 		qA.initElement();
 		// demande nouvelle quantité 
 		String q="";
@@ -143,8 +147,9 @@ public class PanierController {
 		}
 		// modification et confirmation modification
 		this.getClient().getPanierEnCours().ajouterProduit(p, Integer.parseInt(q));
-		ElementInteractif ok = new ElementInteractif("Quantité du produit de référence "+p.getReference()+" modifiée pour "+q+" exemplaire(s).");
+		ElementInteractif ok = new ElementInteractif("Quantité du produit de référence "+p.getReference()+" modifiée pour "+q+" exemplaire(s).", 2);
 		ok.initElement();
+		this.majBdd();
 		//retour menu
 		this.relancerAppli();
 	}
@@ -158,12 +163,12 @@ public class PanierController {
 		p = this.getCatalogue().chercherProduitParRef(refP);
 		if(p == null){
 			// si le produit n'existe pas
-			Element error = new Element("-- Produit non trouvé dans le catalogue --");
+			Element error = new Element("-- Produit non trouvé dans le catalogue --", 1);
 			error.initElement();
 			this.choisirProduit();
 		}else if(!this.getClient().getPanierEnCours().getProduits().containsKey(p)){
 			// si le produit n'est pas dans le panier
-			Element error = new Element("-- Produit non présent dans le panier --");
+			Element error = new Element("-- Produit non présent dans le panier --", 1);
 			error.initElement();
 			this.choisirProduit();
 		}
@@ -192,10 +197,16 @@ public class PanierController {
 		}else{
 			mess = "-- Erreur --";
 		}
-		Element e = new Element(mess);
+		Element e;
+		if(!ok){
+			e = new Element(mess, 1);
+		}else{
+			e = new Element(mess, 2);
+		}
 		e.initElement();
 		if(!ok){
 			this.supprimerProduit();
+			this.majBdd();
 		}else{
 			this.relancerAppli();
 		}
@@ -204,7 +215,7 @@ public class PanierController {
 	
 	// -------------------------------------------------------------------------------
 	//détails
-	public void détailsProduit(){
+	public void detailsProduit(){
 		PanierVue pv = new PanierVue(this.getClient().getPanierEnCours());
 		pv.afficherPanier(this.promo());
 		this.relancerAppli();
@@ -238,10 +249,16 @@ public class PanierController {
 		}else{
 			mess = "-- Erreur --";
 		}
-		Element e = new Element(mess);
+		Element e;
+		if(!ok){
+			e = new Element(mess, 1);
+		}else{
+			e = new Element(mess, 2);
+		}
 		e.initElement();
 		if(!ok){
 			this.validerPanier();
+			this.majBdd();
 		}else{
 			this.relancerAppli();
 		}
@@ -260,8 +277,10 @@ public class PanierController {
 		new ApplicationController(this.getCatalogue(), this.getAnnuaire());
 	}
 	
-	
-	
-	
+	// -------------------------------------------------------------------------------
+	// mise à jour BDD
+	public void majBdd(){
+		this.getAnnuaire().getBddC().miseAJourAnnuaireBDD(this.getAnnuaire());
+	}
 	
 }

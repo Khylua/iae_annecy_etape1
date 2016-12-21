@@ -6,6 +6,10 @@ import java.util.Iterator;
 import gestionProduitsMVC.Model.Panier;
 import gestionProduitsMVC.View.Element;
 
+/**
+ * @author karinerevet
+ * Vue gérant l'affichage des commandes
+ */
 public class CommandesVue {
 	//attribut
 	private ArrayList<Panier> historique;

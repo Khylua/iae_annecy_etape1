@@ -6,6 +6,10 @@ import gestionProduitsMVC.Model.Annuaire;
 import gestionProduitsMVC.Model.Client;
 import gestionProduitsMVC.View.Element;
 
+/**
+ * @author karinerevet
+ * vue gérant l'affichage de l'annuaire des clients
+ */
 public class AnnuaireVue {
 	//attribut
 	private Annuaire annuaire;

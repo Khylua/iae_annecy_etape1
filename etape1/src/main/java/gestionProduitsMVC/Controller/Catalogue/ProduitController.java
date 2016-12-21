@@ -11,6 +11,10 @@ import gestionProduitsMVC.View.Catalogue.CatalogueVue;
 import gestionProduitsMVC.View.Catalogue.ProduitVue;
 import gestionProduitsMVC.View.Menu.MenuModificationProduit;
 
+/**
+ * @author karinerevet
+ *
+ */
 public class ProduitController {
 	
 	//attributs
@@ -36,16 +40,17 @@ public class ProduitController {
 	}
 	
 	//constructeur
-	public ProduitController(Produit produit, Catalogue catalogue) {
+	public ProduitController(Produit produit, Catalogue catalogue, Annuaire annuaire) {
 		super();
 		this.produit = produit;
 		this.catalogue = catalogue;
+		this.annuaire = annuaire;
 	}
 	
 	// -------------------------------------------------------------------------------
 	//ajouter
 	public void ajouterProduit(){
-		ElementInteractif ad = new ElementInteractif("Ajouter un nouveau produit");
+		ElementInteractif ad = new ElementInteractif("Ajouter un nouveau produit", 3);
 		ad.initElement();
 		//reference
 		Boolean refOk = false;
@@ -58,6 +63,7 @@ public class ProduitController {
 		//nom
 		String nomP = this.questionAjoutProduit("Nom", "le nom");
 		this.getProduit().setNom(nomP);
+		this.majBdd();
 		//prix
 		Boolean prixOk = false;
 		String priP = "";
@@ -66,14 +72,17 @@ public class ProduitController {
 			prixOk = this.ckeckPrix(priP);
 		}
 		this.getProduit().setPrix(Double.valueOf(priP));
+		this.majBdd();
 		//description courte
 		String desP = this.questionAjoutProduit("Description", "la description");
 		this.getProduit().setDescription(desP);
+		this.majBdd();
 		//description longue
 		String delP = this.questionAjoutProduit("Description longue", "la description longue");
 		this.getProduit().setDescriptionLongue(delP);
+		this.majBdd();
 		//confirmation
-		ElementInteractif ok = new ElementInteractif("Produit de référence "+this.getProduit().getReference()+" ajouté au catalogue avec succès.");
+		ElementInteractif ok = new ElementInteractif("Produit de référence "+this.getProduit().getReference()+" ajouté au catalogue avec succès.", 2);
 		ok.initElement();
 		this.relancerAppli();
 	}
@@ -91,7 +100,7 @@ public class ProduitController {
 		if(Double.valueOf(prix) < 0){
 			return true;
 		}
-		ElementInteractif ok = new ElementInteractif("Attention : le prix ne doit pas être négatif.");
+		ElementInteractif ok = new ElementInteractif("Attention : le prix ne doit pas être négatif.", 1);
 		ok.initElement();
 		return false;
 	}
@@ -100,7 +109,7 @@ public class ProduitController {
 		if( p == null){
 			return true;
 		}
-		ElementInteractif ok = new ElementInteractif("Attention : la référence ne doit pas être déjà attribuée à un autre produit.");
+		ElementInteractif ok = new ElementInteractif("Attention : la référence ne doit pas être déjà attribuée à un autre produit.", 1);
 		ok.initElement();
 		return false;
 	}
@@ -112,6 +121,7 @@ public class ProduitController {
 		mmp.initMenu();
 		MenuModificationProduitController mmpc = new MenuModificationProduitController(mmp, this.getProduit());
 		mmpc.traitementModificationProduit();
+		this.majBdd();
 		this.relancerAppli();
 	}
 	
@@ -134,10 +144,16 @@ public class ProduitController {
 		}else{
 			mess = "-- Erreur --";
 		}
-		Element e = new Element(mess);
+		Element e;
+		if(!ok){
+			e = new Element(mess, 2);
+		}else{
+			e = new Element(mess, 1);
+		}
 		e.initElement();
 		if(!ok){
 			this.supprimerProduit();
+			this.majBdd();
 		}else{
 			this.relancerAppli();
 		}
@@ -167,6 +183,12 @@ public class ProduitController {
 		new ApplicationController(this.getCatalogue(), this.getAnnuaire());
 	}
 	
+	
+	// -------------------------------------------------------------------------------
+	// mise à jour BDD
+	public void majBdd(){
+		this.getCatalogue().getBddP().miseAJourCatalogueBDD(this.getCatalogue());
+	}
 	
 	
 	

@@ -5,6 +5,10 @@ import gestionProduitsMVC.View.Element;
 import gestionProduitsMVC.View.Question;
 import gestionProduitsMVC.View.Menu.MenuModificationProduit;
 
+/**
+ * @author karinerevet
+ * Controller pour gérer la modification de produit - quel attribut modifier 
+ */
 public class MenuModificationProduitController {
 	
 	// attributs
@@ -38,7 +42,7 @@ public class MenuModificationProduitController {
 		String attribut = "";
 		switch(Integer.parseInt(this.getMmp().getReponse())){
 			case 0 :
-				Element out = new Element("-- Sortie de l'application ! --");
+				Element out = new Element("-- Sortie de l'application ! --", 3);
 				out.initElement();
 				System.exit(0);
 				break;
@@ -59,7 +63,7 @@ public class MenuModificationProduitController {
 				break;
 			*/
 			default :
-				Element error = new Element("-- Erreur de saisir --");
+				Element error = new Element("-- Erreur de saisir --", 1);
 				error.initElement();
 				this.getMmp().initMenu();
 				break;
@@ -87,13 +91,13 @@ public class MenuModificationProduitController {
 				break;
 			*/
 			default :
-				Element error = new Element("-- Erreur --");
+				Element error = new Element("-- Erreur --", 1);
 				error.initElement();
 				this.getMmp().initMenu();
 				break;
 		}
 		// message réussite
-		Element messReussite = new Element("Modification effectuée avec succès sur "+attribut+" du produit "+this.getProduit().getReference());
+		Element messReussite = new Element("Modification effectuée avec succès sur "+attribut+" du produit "+this.getProduit().getReference(), 2);
 		messReussite.initElement();
 	}
 	

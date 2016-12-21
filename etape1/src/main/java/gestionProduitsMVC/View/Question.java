@@ -1,11 +1,15 @@
 package gestionProduitsMVC.View;
 
+/**
+ * @author karinerevet
+ * vue héritant de Element Interactif
+ * ajoute la gestion des questions
+ */
 public class Question extends ElementInteractif{
 	
 	// attributs
 	private String question;
 
-	
 	// getters et setters
 	public String getQuestion() {
 		return question;
@@ -14,7 +18,6 @@ public class Question extends ElementInteractif{
 		this.question = question;
 	}
 	
-
 	// constructeur
 	public Question(String nom, String question) {
 		super(nom);
@@ -27,7 +30,5 @@ public class Question extends ElementInteractif{
 		this.affichage(this.question);
 		this.lectureReponse();
 	}
-	
-	
 
 }

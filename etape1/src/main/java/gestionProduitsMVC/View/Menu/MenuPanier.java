@@ -1,5 +1,9 @@
 package gestionProduitsMVC.View.Menu;
 
+/**
+ * @author karinerevet
+ * Vue gérant l'affichage du menu d'accès au panier
+ */
 public class MenuPanier extends Menu{
 	
 	public MenuPanier(String nom) {

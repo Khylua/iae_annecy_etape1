@@ -6,6 +6,10 @@ import gestionProduitsMVC.Model.Catalogue;
 import gestionProduitsMVC.Model.Produit;
 import gestionProduitsMVC.View.Element;
 
+/**
+ * @author karinerevet
+ * Vue gérant l'affichage du catalogue de produits
+ */
 public class CatalogueVue {
 	//attribut
 	private Catalogue catalogue;
